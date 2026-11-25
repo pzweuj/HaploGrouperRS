@@ -72,6 +72,8 @@ Peak process working set measured on Windows x64 using release builds, the same 
 
 The four comparisons produced identical SHA-256 digests for the corresponding output files.
 
+
+
 ## License and citation
 
 Commercial use of the HaploGrouperRS 0.2.0 contributions is prohibited under the project license. This is a source-available, noncommercial distribution. Upstream HaploGrouper and earlier Apache-licensed contributions retain their Apache-2.0 grants. The ISOGG-derived data carries attribution, noncommercial and ShareAlike terms under CC BY-NC-SA 3.0. [Project license](LICENSE) · [Original Apache license](LICENSES/Apache-2.0.txt) · [Y-data attribution](data/Y-DATA.md) · [NOTICE](NOTICE)
