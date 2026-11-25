@@ -1,0 +1,13 @@
+[package]
+name = "haplogrouper-rs"
+version = "0.2.0"
+edition = "2024"
+license-file = "LICENSE"
+description = "Assign haplogroups from haploid VCF genotypes and a user-supplied phylogeny"
+include = ["src/**", "tests/**", "Cargo.toml", "Cargo.lock", "LICENSE", "LICENSES/**", "NOTICE", "README.md", "data/chrY_isogg*.txt", "data/Y-DATA.md"]
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+flate2 = "1"
+tempfile = "3"

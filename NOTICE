@@ -1,0 +1,15 @@
+HaploGrouperRS is a Rust adaptation of HaploGrouper.
+Upstream copyright 2025 Agnar Helgason.
+Upstream project: https://gitlab.com/bio_anth_decode/haploGrouper
+The Python implementation and its command-line interface have been reimplemented
+in Rust. The upstream license and copyright statement are reproduced in
+LICENSES/Apache-2.0.txt. The HaploGrouperRS changes in version 0.2.0 include
+compact genotype storage, streaming reference lookup and blockwise score output.
+The project terms for these changes are in LICENSE.
+
+Y-chromosome data: International Society of Genetic Genealogy, with tree and
+locus tables prepared by the HaploGrouper authors and revised loci from deCODE
+genetics. The data sources, versions and terms are listed in data/Y-DATA.md.
+
+Jagadeesan et al., HaploGrouper: a generalized approach to haplogroup
+classification, Bioinformatics 37, 570–572. DOI: 10.1093/bioinformatics/btaa729

@@ -1,0 +1,37 @@
+name: Build HaploGrouperRS
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2022
+            target: x86_64-pc-windows-msvc
+          - runner: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+          - runner: macos-15
+            target: aarch64-apple-darwin
+          - runner: macos-15-intel
+            target: x86_64-apple-darwin
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Rust
+        run: rustup toolchain install stable --profile minimal --target ${{ matrix.target }} --no-self-update
+      - name: Run CLI tests
+        run: cargo +stable test --locked --target ${{ matrix.target }}
+      - name: Build release
+        run: cargo +stable build --release --locked --target ${{ matrix.target }}
+      - name: Package binary and Y reference data
+        run: python .github/package.py ${{ matrix.target }}
+      - uses: actions/upload-artifact@v7
+        with:
+          name: haplogrouper-rs-${{ matrix.target }}
+          path: target/archives/haplogrouper-rs-${{ matrix.target }}.*
+          if-no-files-found: error

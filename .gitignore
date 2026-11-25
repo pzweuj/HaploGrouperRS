@@ -1,0 +1,4 @@
+/target/
+/data/*
+!/data/chrY_isogg*.txt
+!/data/Y-DATA.md
