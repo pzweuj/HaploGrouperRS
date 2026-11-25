@@ -32,7 +32,7 @@ Download the archive for your platform from [GitHub Releases](https://github.com
 
 For the ISOGG Y references, download `haplogrouper-rs-y-data.tar.gz` once. Run `tar -xzf haplogrouper-rs-y-data.tar.gz` in your working directory to create the `data/` paths used in the example above. If you already have a tree and locus table, pass their paths with `-t` and `-l`.
 
-The **Build HaploGrouperRS** workflow also makes the archives available as Actions artifacts on pushes, pull requests and manual runs. Pushing a version tag beginning with `v` publishes all five archives to the matching Release after all builds and tests pass. Rerunning the workflow on that tag updates the assets.
+The **Build HaploGrouperRS** workflow also makes the archives available as Actions artifacts on pushes, pull requests and manual runs. After the default branch builds and tests pass, the workflow publishes all five archives to a Release named for the package version in `Cargo.toml` (for example, `v0.2.0`). It creates the tag at the tested commit. To publish a later commit, bump the package version. Pushing a `v*` tag or manually running the workflow on that tag publishes to its matching Release. Rerunning a release build for the same commit refreshes its assets.
 
 ## Command-line options
 
