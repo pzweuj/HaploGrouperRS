@@ -3,7 +3,6 @@ import json
 import subprocess
 import sys
 import tarfile
-import zipfile
 from pathlib import Path
 
 
@@ -13,11 +12,8 @@ def package(target):
     executable = Path("target", target, "release", binary)
     subprocess.run([executable, "--version"], check=True)
     files = {binary: executable}
-    for name in ["LICENSE", "NOTICE", "LICENSES/Apache-2.0.txt", "README.md",
-                 "data/Y-DATA.md"]:
+    for name in ["LICENSE", "NOTICE", "LICENSES/Apache-2.0.txt", "README.md"]:
         files[name] = Path(name)
-    for path in sorted(Path("data").glob("chrY_isogg*.txt")):
-        files[path.as_posix()] = path
 
     # Carry the license notices shipped by the locked crates for this target.
     metadata = json.loads(subprocess.check_output([
@@ -39,15 +35,9 @@ def package(target):
     index = executable.parent / "crate-notices.txt"
     index.write_text("\n".join(notices) + "\n", encoding="utf-8")
     files["LICENSES/crates/index.txt"] = index
-    stem = destination / f"haplogrouper-rs-{target}"
-    if windows:
-        with zipfile.ZipFile(stem.with_suffix(".zip"), "w", zipfile.ZIP_DEFLATED) as archive:
-            for name, path in files.items():
-                archive.write(path, name)
-    else:
-        with tarfile.open(stem.with_suffix(".tar.gz"), "w:gz") as archive:
-            for name, path in files.items():
-                archive.add(path, arcname=name)
+    with tarfile.open(destination / f"haplogrouper-rs-{target}.tar.gz", "w:gz") as archive:
+        for name, path in files.items():
+            archive.add(path, arcname=name)
 
 
 if __name__ == "__main__":

@@ -21,14 +21,18 @@ cargo test --locked
 
 The executable is `target/release/haplogrouper-rs` on Unix or `target/release/haplogrouper-rs.exe` on Windows. Run it with `--help` to inspect the options.
 
-The **Build HaploGrouperRS** GitHub Actions workflow runs on pushes, pull requests and manual dispatch. Open a successful run and download the artifact for your target. Extract the platform archive and run the executable from the extracted directory to use the bundled `data/` paths. Each archive includes the Y references, attribution, software license and dependency notices.
+Download the archive for your platform from [GitHub Releases](https://github.com/pzweuj/HaploGrouperRS/releases). Each program archive contains the executable, README and license notices.
 
-| Platform | Artifact suffix | Archive |
-| --- | --- | --- |
-| Windows x64 | `x86_64-pc-windows-msvc` | ZIP |
-| Linux x64 (built on Ubuntu 22.04) | `x86_64-unknown-linux-gnu` | tar.gz |
-| macOS Apple Silicon | `aarch64-apple-darwin` | tar.gz |
-| macOS Intel | `x86_64-apple-darwin` | tar.gz |
+| Platform | Release asset |
+| --- | --- |
+| Windows x64 | `haplogrouper-rs-x86_64-pc-windows-msvc.tar.gz` |
+| Linux x64 (built on Ubuntu 22.04) | `haplogrouper-rs-x86_64-unknown-linux-gnu.tar.gz` |
+| macOS Apple Silicon | `haplogrouper-rs-aarch64-apple-darwin.tar.gz` |
+| macOS Intel | `haplogrouper-rs-x86_64-apple-darwin.tar.gz` |
+
+For the ISOGG Y references, download `haplogrouper-rs-y-data.tar.gz` once. Run `tar -xzf haplogrouper-rs-y-data.tar.gz` in your working directory to create the `data/` paths used in the example above. If you already have a tree and locus table, pass their paths with `-t` and `-l`.
+
+The **Build HaploGrouperRS** workflow also makes the archives available as Actions artifacts on pushes, pull requests and manual runs. Pushing a version tag beginning with `v` publishes all five archives to the matching Release after all builds and tests pass. Rerunning the workflow on that tag updates the assets.
 
 ## Command-line options
 

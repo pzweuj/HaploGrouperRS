@@ -28,10 +28,47 @@ jobs:
         run: cargo +stable test --locked --target ${{ matrix.target }}
       - name: Build release
         run: cargo +stable build --release --locked --target ${{ matrix.target }}
-      - name: Package binary and Y reference data
+      - name: Package binary
         run: python .github/package.py ${{ matrix.target }}
       - uses: actions/upload-artifact@v7
         with:
-          name: haplogrouper-rs-${{ matrix.target }}
-          path: target/archives/haplogrouper-rs-${{ matrix.target }}.*
+          archive: false
+          path: target/archives/haplogrouper-rs-${{ matrix.target }}.tar.gz
           if-no-files-found: error
+
+  reference-data:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: Package Y reference data and notices
+        run: tar -czf haplogrouper-rs-y-data.tar.gz data LICENSE NOTICE LICENSES/Apache-2.0.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          archive: false
+          path: haplogrouper-rs-y-data.tar.gz
+          if-no-files-found: error
+
+  release:
+    if: github.event_name != 'pull_request' && !github.event.deleted && startsWith(github.ref, 'refs/tags/v')
+    needs: [build, reference-data]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    concurrency: release-${{ github.ref }}
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: haplogrouper-rs-*.tar.gz
+          path: archives
+          merge-multiple: true
+      - name: Publish release archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" > /dev/null; then
+            gh release upload "$TAG" archives/*.tar.gz --clobber
+          else
+            gh release create "$TAG" archives/*.tar.gz --verify-tag --generate-notes
+          fi
